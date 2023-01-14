@@ -77,10 +77,8 @@ from sklearn.decomposition import PCA
 
 # Set up the PCA model to reduce the dimensionality of the data
 pca = PCA(n_components=2)
+
 # Perform PCA on the cluster centroids
-centroids = clusterer.centers
-
-
 centroids_coordinates = np.zeros((nb_clusters,len(dict1)))
 i = 0
 j = 0
