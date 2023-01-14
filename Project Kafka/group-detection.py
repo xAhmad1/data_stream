@@ -54,8 +54,6 @@ def clean_text(text1):
     text1 = re.sub(r'\s+', ' ',text1)
     text1 = ' '.join([word for word in text1.split() if word not in stp_list])
     return text1
-#df_tweets['tweet'] = df_tweets.iloc[:,0].apply(lambda x: clean_text(x))
-#print(df_tweets.head())
 
 # Transform the data using tfidf
 X_train, X_test, y_train, y_test = train_test_split(df_tweets['tweet'], df_tweets['label'], test_size=0.33, random_state=42)
@@ -73,7 +71,6 @@ hashtags = [item for sublist in np.unique(hashtags.array) for item in sublist] #
 
 # Convert the hashtags to lower format
 hashtags = [word.lower() for word in hashtags]
-print((np.array(hashtags)))
 
 # Create a dictionary of hashtags with their specific count
 hashtags_dict = {}
