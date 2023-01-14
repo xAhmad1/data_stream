@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from river import feature_extraction
 import re
 
-# Define Kafka consumer and topic to consume from
+# Define Kafka consumer and topic to consume from 
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
 topicName = "tweets-labeled11"
 
