@@ -8,6 +8,9 @@ from river import linear_model
 from river import feature_extraction
 from river import optim
 import re
+import unicodedata
+import nltk
+from nltk.corpus import stopwords
 tfidf = feature_extraction.TFIDF()
 
 
@@ -30,14 +33,22 @@ consumer.seek_to_beginning(tp)
 LR = linear_model.LogisticRegression(optimizer=optim.SGD(.1))
 sum = 0
 
-def clean_text(df, text_field):
-    df[text_field] = df[text_field].str.lower()
-    df[text_field] = df[text_field].apply(lambda elem: re.sub(r"(@[A-Za-z0–9]+)|([⁰-9A-Za-z \t])|(\w+:\/\/\S+)|^rt|http.+?", "",   elem)) 
-    return df
+stp_list = stopwords.words('english') + stopwords.words('french')
+def clean_text(text1):
+    rt = text1[0:3]
+    if (rt == "RT "):
+        text1 = re.sub('RT @.*:','',text1)
+    text1 = text1.lower()
+    text1 = unicodedata.normalize('NFKD',text1).encode('ascii', errors='ignore').decode('utf-8')
+    text1 =  re.sub('[^\dA-Za-z]',' ',text1)
+    text1 = re.sub(r'\s+', ' ',text1)
+    text1 = ' '.join([word for word in text1.split() if word not in stp_list])
+    return text1
 
 
 for msg in consumer:
     sentence = (msg.value[4:]).decode()
+    sentence = clean_text(sentence)
     label = (msg.value[0:3]).decode()==("POS" or "NEU")
 
 
