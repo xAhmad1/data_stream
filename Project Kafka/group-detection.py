@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from river import feature_extraction
 import re
 
-# Define Kafka consumer and topic to consume from 
+# Define Kafka consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
 topicName = "tweets-labeled11"
 
@@ -69,4 +69,25 @@ def find_hashtags(tweet):
     return re.findall('(#[A-Za-z]+[A-Za-z0-9-_]+)', tweet)
 hashtags = df_tweets.iloc[:,0].apply(lambda x: find_hashtags(x))
 hashtags = [item for sublist in np.unique(hashtags.array) for item in sublist] #convert list of lists to a flat_list
-print((np.unique(np.array(hashtags))))
+
+# Convert the hashtags to lower format
+hashtags = [word.lower() for word in hashtags]
+print((np.array(hashtags)))
+
+# Create a dictionary of hashtags with their specific count
+hashtags_dict = {}
+for hashtag in hashtags:
+    if (hashtag in hashtags_dict.keys()):
+        hashtags_dict[hashtag] +=1
+    else:
+        hashtags_dict[hashtag] = 1
+
+# Print the ranking for the used hashtags :
+sorted_hashtags = sorted(hashtags_dict.items(), key=lambda x:x[1] , reverse= True)
+
+# Print the top 10 hashtags
+print(sorted_hashtags[:10])
+
+
+
+
