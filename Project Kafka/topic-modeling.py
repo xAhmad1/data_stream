@@ -17,7 +17,7 @@ from wordcloud import WordCloud
 
 # Define Kafka consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
-topicName = "tweets-labeled11"
+topicName = "tweets-labeled"
 
 # Getting the last offset of the messages
 tp = TopicPartition(topicName,0)
@@ -54,6 +54,7 @@ def clean_text(text1):
     text1 =  re.sub('[^A-Za-z]',' ',text1)
     text1 = re.sub(r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+', ' ',text1)
     text1 = re.sub('https', ' ',text1)
+    text1 = re.sub(r'\b\w{1,3}\b', '', text1)
     text1 = re.sub(r'\s+', ' ',text1)
     text1 = ' '.join([word for word in text1.split() if word not in stp_list])
     return text1
@@ -115,7 +116,7 @@ tweets_lda = LdaModel(tweets_bow,
                       num_topics = k,
                       id2word = text_dict,
                       random_state = 1,
-                      passes=10)
+                      passes=50)
 
 # visualising the topics
 import pyLDAvis.gensim

@@ -8,7 +8,7 @@ size =100
 bootstrap_servers = ['localhost:9092']
 
 # Define topic name from where the message will recieve
-topicName = 'raw-tweets2'
+topicName = 'raw-tweets'
 tp = TopicPartition(topicName,0)
 
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
@@ -36,6 +36,3 @@ for msg in consumer:
         print(nb_fr)
         break
     
-    # if(s==size):
-    #     break
-# sys.exit()

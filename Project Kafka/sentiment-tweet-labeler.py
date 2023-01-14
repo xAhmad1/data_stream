@@ -20,6 +20,6 @@ for topicName in topics:
 
     for msg in consumer:
         sentiment = sent_pipe(msg.value.decode())[0]['label']
-        producer.send('tweets-labeled11',str.encode(sentiment) + msg.value + str.encode("\n"))
+        producer.send('tweets-labeled',str.encode(sentiment) + msg.value + str.encode("\n"))
         if(msg.offset == lastOffset-1):
             break

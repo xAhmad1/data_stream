@@ -11,7 +11,7 @@ client = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAALv2kgEAAAAAAFPj4lftyFc
 
 query = 'France'
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
-topic_name = 'raw-tweets2'
+topic_name = 'raw-tweets'
 
 size = 100
 for tweet in tweepy.Paginator(client.search_recent_tweets, query=query,

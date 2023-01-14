@@ -15,7 +15,7 @@ sent_pipe = pipeline(model="finiteautomata/bertweet-base-sentiment-analysis")
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
-topicName = "tweets-labeled11"
+topicName = "tweets-labeled"
 # Read and print message from consumer
 
 

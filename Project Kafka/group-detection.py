@@ -15,7 +15,7 @@ import re
 
 # Define Kafka consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
-topicName = "tweets-labeled11"
+topicName = "tweets-labeled"
 
 # Getting the last offset of the messages
 tp = TopicPartition(topicName,0)
@@ -49,7 +49,8 @@ def clean_text(text1):
         text1 = re.sub('RT @.*:','',text1)
     text1 = text1.lower()
     text1 = unicodedata.normalize('NFKD',text1).encode('ascii', errors='ignore').decode('utf-8')
-    text1 =  re.sub('[^\dA-Za-z]',' ',text1)
+    text1 =  re.sub('[^A-Za-z]',' ',text1)
+    text1 = re.sub(r'\b\w{1,3}\b', '', text1)
     text1 = re.sub(r'\s+', ' ',text1)
     text1 = ' '.join([word for word in text1.split() if word not in stp_list])
     return text1

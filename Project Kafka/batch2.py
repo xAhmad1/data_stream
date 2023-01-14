@@ -15,7 +15,7 @@ import re
 
 # Define Kafka consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
-topicName = "tweets-labeled11"
+topicName = "tweets-labeled"
 
 # Getting the last offset of the messages
 tp = TopicPartition(topicName,0)
@@ -67,5 +67,3 @@ vectorized2 = cv1.transform(X_test)
 # Fit a logistic regression model
 clf = LogisticRegression(random_state=0).fit(vectorized1, y_train)
 print(clf.score(vectorized2,y_test))
-
-print(vectorized1)
