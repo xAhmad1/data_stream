@@ -1,4 +1,7 @@
 
+# This code is an attempt to use the river STREAMKMeans function to do online clustering of tweets
+
+# Imports
 from kafka import KafkaConsumer, TopicPartition
 import numpy as np
 import unicodedata
@@ -47,7 +50,7 @@ for msg in consumer:
     tweet = msg.value[4:].decode()
     label = msg.value[0:3].decode() == ("POS" or "NEU")
 
-    #y_pred = model.predict_one(tweet)
+    
     tweet = clean_text(tweet)
     tweet_bow = feature_extraction.BagOfWords(lowercase=True, ngram_range=(1, 1)).transform_one(tweet)
     tweet_bow_list.append(tweet_bow)

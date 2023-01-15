@@ -1,33 +1,35 @@
+# This code builds an online tweet sentiment analysis using the river library
 
-
-from kafka import KafkaConsumer, KafkaProducer, TopicPartition
+# Imports
+from kafka import KafkaConsumer, TopicPartition
 from river import linear_model
 from river import feature_extraction
 from river import optim
 import re
 import unicodedata
 from nltk.corpus import stopwords
+
+# Defining the tfidf feature extractor
 tfidf = feature_extraction.TFIDF()
 
-
+# Defining the consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
-
 topicName = "tweets-labeled-demo"
-# Read and print message from consumer
 
 
+# Defining the model
 model = linear_model.LogisticRegression()
+
+
+# Getting the size of the topic
 tp = TopicPartition(topicName,0)
 consumer.assign([tp])
-
-#Getting the size of the topic
 consumer.seek_to_end(tp)
 lastOffset = consumer.position(tp)
 consumer.seek_to_beginning(tp)
 LR = linear_model.LogisticRegression(optimizer=optim.SGD(.1))
-sum = 0
 
+# Defining a function to clean text read from the topic
 stp_list = stopwords.words('english') + stopwords.words('french')
 def clean_text(text1):
     rt = text1[0:3]
@@ -42,27 +44,17 @@ def clean_text(text1):
     text1 = ' '.join([word for word in text1.split() if word not in stp_list])
     return text1
 
-
+# Looping on each msg in the topic, updating the tfidf matrix then updating our model
 for msg in consumer:
     sentence = (msg.value[4:]).decode()
     sentence = clean_text(sentence)
     label = (msg.value[0:3]).decode()==("POS" or "NEU")
 
 
-    #print(LR.predict_one(tfidf.transform_one(sentence)) == label)
-    if (LR.predict_one(tfidf.transform_one(sentence)) != label):
-        sum+=1
-        print(sum)
-
     tfidf = tfidf.learn_one(sentence)
-    #print(tfidf.transform_one(sentence))
     LR = LR.learn_one(tfidf.transform_one(sentence),label)
     
 
-
-
-    #print(label)
-    #print(msg.offset)
     if(msg.offset == lastOffset-1):
         print(lastOffset)
         accuracy = (1 - sum/lastOffset) * 100

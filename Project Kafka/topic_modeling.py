@@ -1,5 +1,6 @@
+# This code does topic modeling using LDA
 
-
+# Imports
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 from matplotlib import pyplot as plt
 import numpy as np
@@ -56,7 +57,6 @@ def clean_text(text1):
     text1 = ' '.join([word for word in text1.split() if word not in stp_list])
     return text1
 df_tweets['tweet'] = df_tweets.iloc[:,0].apply(lambda x: clean_text(x))
-#print(df_tweets.head())
 
 # Transform the data using tfidf
 X_train, X_test, y_train, y_test = train_test_split(df_tweets['tweet'], df_tweets['label'], test_size=0.33, random_state=42)
@@ -104,7 +104,6 @@ from gensim.corpora import Dictionary
 ## Create a bag of words from the dictionary
 text_dict = Dictionary(list1)
 tweets_bow = [text_dict.doc2bow(tweet) for tweet in list1]
-#print(tweets_bow)
 
 ## Fitting an LDA model
 

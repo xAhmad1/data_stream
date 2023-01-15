@@ -1,4 +1,5 @@
-# This code will filter the tweets inside the raw-tweets topic into two other topics : en-tweets and fr-tweets
+# This code will filter the tweets inside the raw-tweets topic into two other topics : en-tweets and fr-tweets for english and french tweets
+
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 
 # Import sys module
@@ -19,11 +20,9 @@ lastOffset = consumer.position(tp)
 consumer.seek_to_beginning(tp)
 
 # Read and print message from consumer
-s=0
 nb_eng = 0
 nb_fr = 0
 for msg in consumer:
-    # s+=1
     lang = (msg.value[1:3]).decode()
     if (lang == "en"):
         producer.send('en-tweets-demo', msg.value[4:])

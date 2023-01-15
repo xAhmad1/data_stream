@@ -1,4 +1,4 @@
-
+# This code gets the most trending hashtags in the tweets
 
 from kafka import KafkaConsumer, TopicPartition
 import numpy as np
