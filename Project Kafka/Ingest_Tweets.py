@@ -1,9 +1,7 @@
 # this code will ingest tweets into a kafka topic called raw-tweets
 
 import tweepy
-import kafka
 from kafka import KafkaProducer
-import re
 
 client = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAALv2kgEAAAAAAFPj4lftyFcSuE9yxVAufMmgkPM%3DbYJcYlZUJJjAPk5m7yd3S51B4tEjYQL4F5CcTX56DF0tg8jnVb')
 

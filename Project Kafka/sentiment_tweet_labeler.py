@@ -1,6 +1,5 @@
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 from transformers import pipeline
-import json
 
 sent_pipe = pipeline(model="finiteautomata/bertweet-base-sentiment-analysis" , max_length = 128)
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')

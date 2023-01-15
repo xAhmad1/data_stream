@@ -1,6 +1,4 @@
-#Using the river-library to do sentiment analysis
 
-from collections import defaultdict
 from kafka import KafkaConsumer, TopicPartition
 import numpy as np
 import unicodedata

@@ -1,20 +1,15 @@
-#Using the river-library to do sentiment analysis
+
 
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
-from transformers import pipeline
-from river import stream
-from river import preprocessing
 from river import linear_model
 from river import feature_extraction
 from river import optim
 import re
 import unicodedata
-import nltk
 from nltk.corpus import stopwords
 tfidf = feature_extraction.TFIDF()
 
 
-sent_pipe = pipeline(model="finiteautomata/bertweet-base-sentiment-analysis")
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
 

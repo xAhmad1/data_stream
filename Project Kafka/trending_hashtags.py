@@ -1,16 +1,12 @@
-#Using the river-library to do sentiment analysis
 
-from kafka import KafkaConsumer, KafkaProducer, TopicPartition
-from transformers import pipeline
+
+from kafka import KafkaConsumer, TopicPartition
 import numpy as np
 import pandas as pd
 import unicodedata
-import nltk
 from nltk.corpus import stopwords
-from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
-from river import feature_extraction
 import re
 
 # Define Kafka consumer and topic to consume from
