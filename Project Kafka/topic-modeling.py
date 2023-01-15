@@ -17,7 +17,7 @@ from wordcloud import WordCloud
 
 # Define Kafka consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
-topicName = "tweets-labeled"
+topicName = "tweets-labeled-demo"
 
 # Getting the last offset of the messages
 tp = TopicPartition(topicName,0)

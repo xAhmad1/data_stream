@@ -10,12 +10,13 @@ from nltk.corpus import stopwords
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
+from imblearn.over_sampling import RandomOverSampler
 from river import feature_extraction
 import re
 
 # Define Kafka consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
-topicName = "tweets-labeled"
+topicName = "tweets-labeled-demo"
 
 # Getting the last offset of the messages
 tp = TopicPartition(topicName,0)
@@ -59,13 +60,21 @@ df_tweets['tweet'] = df_tweets.iloc[:,0].apply(lambda x: clean_text(x))
 print(df_tweets.head())
 
 # Transform the data using tfidf
+print(df_tweets.shape)
 X_train, X_test, y_train, y_test = train_test_split(df_tweets['tweet'], df_tweets['label'], test_size=0.33, random_state=42)
-cv1 = TfidfVectorizer(lowercase=True, min_df=3,  max_features=None,
+cv1 = TfidfVectorizer(min_df=2,  max_features=None,
                       strip_accents='unicode', analyzer='word', token_pattern=r'\w{1,}',
                       ngram_range=(1, 3))
-vectorized1 = cv1.fit_transform(X_train)
+
+# Adding an oversampler
+ros = RandomOverSampler()
+X_res_train, y_res_train = ros.fit_resample(np.array(X_train).reshape(-1,1), y_train)
+
+vectorized1 = cv1.fit_transform(X_res_train[:,0])
 vectorized2 = cv1.transform(X_test)
 
+
 # Fit a logistic regression model
-clf = LogisticRegression(random_state=0).fit(vectorized1, y_train)
+clf = LogisticRegression(random_state=0).fit(vectorized1, y_res_train)
+print(np.sum(y_res_train == 'False'))
 print(clf.score(vectorized2,y_test))

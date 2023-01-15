@@ -11,11 +11,10 @@ client = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAALv2kgEAAAAAAFPj4lftyFc
 
 query = 'France'
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
-topic_name = 'raw-tweets'
+topic_name = 'raw-tweets-demo'
 
 size = 100
 for tweet in tweepy.Paginator(client.search_recent_tweets, query=query,
-tweet_fields=[ 'created_at', 'lang'], max_results=size).flatten(limit=2000):
-    print(type(tweet))
+tweet_fields=[ 'created_at', 'lang'], max_results=size).flatten(limit=3000):
     data = "\n" + tweet['lang'] + " \n" + tweet['text']
     producer.send(topic_name, str.encode(data))

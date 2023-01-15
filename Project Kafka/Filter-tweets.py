@@ -8,7 +8,7 @@ size =100
 bootstrap_servers = ['localhost:9092']
 
 # Define topic name from where the message will recieve
-topicName = 'raw-tweets'
+topicName = 'raw-tweets-demo'
 tp = TopicPartition(topicName,0)
 
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
@@ -26,10 +26,10 @@ for msg in consumer:
     # s+=1
     lang = (msg.value[1:3]).decode()
     if (lang == "en"):
-        producer.send('en-tweets', msg.value[4:])
+        producer.send('en-tweets-demo', msg.value[4:])
         nb_eng += 1
     elif (lang == "fr"):
-        producer.send('fr-tweets', msg.value[4:])
+        producer.send('fr-tweets-demo', msg.value[4:])
         nb_fr += 1
     if(msg.offset == lastOffset-1):
         print(nb_eng)
