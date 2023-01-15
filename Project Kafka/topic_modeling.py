@@ -1,18 +1,16 @@
 # This code does topic modeling using LDA
 
 # Imports
-from kafka import KafkaConsumer, KafkaProducer, TopicPartition
+from kafka import KafkaConsumer, TopicPartition
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 import unicodedata
 from nltk.corpus import stopwords
-from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 import re
 from wordcloud import WordCloud
-
 # Define Kafka consumer and topic to consume from
 consumer = KafkaConsumer(bootstrap_servers='localhost:9092')
 topicName = "tweets-labeled-demo"
@@ -42,7 +40,11 @@ print(df_tweets.head())
 
 # Do some cleaning on the tweets
 #nltk.download('stopwords')
-stp_list = stopwords.words('english') + stopwords.words('french')
+#import nltk
+#nltk.download('wordnet')
+from spacy.lang.fr.stop_words import STOP_WORDS as fr_stop
+from spacy.lang.en.stop_words import STOP_WORDS as en_stop
+stp_list = list(fr_stop) + list(en_stop)
 def clean_text(text1):
     rt = text1[0:3]
     if (rt == "RT "):
