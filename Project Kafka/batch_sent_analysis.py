@@ -1,10 +1,10 @@
+# This code does batch sentiment analysis
 
-
+# Imports
 from kafka import KafkaConsumer, TopicPartition
 import numpy as np
 import pandas as pd
 import unicodedata
-import nltk
 from nltk.corpus import stopwords
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -58,7 +58,6 @@ df_tweets['tweet'] = df_tweets.iloc[:,0].apply(lambda x: clean_text(x))
 print(df_tweets.head())
 
 # Transform the data using tfidf
-print(df_tweets.shape)
 X_train, X_test, y_train, y_test = train_test_split(df_tweets['tweet'], df_tweets['label'], test_size=0.33, random_state=42)
 cv1 = TfidfVectorizer(min_df=2,  max_features=None,
                       strip_accents='unicode', analyzer='word', token_pattern=r'\w{1,}',
@@ -74,5 +73,4 @@ vectorized2 = cv1.transform(X_test)
 
 # Fit a logistic regression model
 clf = LogisticRegression(random_state=0).fit(vectorized1, y_res_train)
-print(np.sum(y_res_train == 'False'))
-print(clf.score(vectorized2,y_test))
+print(clf.score(vectorized2,y_test) * 100)
