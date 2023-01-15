@@ -49,7 +49,9 @@ def clean_text(text1):
         text1 = re.sub('RT @.*:','',text1)
     text1 = text1.lower()
     text1 = unicodedata.normalize('NFKD',text1).encode('ascii', errors='ignore').decode('utf-8')
-    text1 =  re.sub('[^\dA-Za-z]',' ',text1)
+    text1 =  re.sub('[^A-Za-z]',' ',text1)
+    text1 = re.sub(r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+', ' ',text1)
+    text1 = re.sub('https', ' ',text1)
     text1 = re.sub(r'\s+', ' ',text1)
     text1 = ' '.join([word for word in text1.split() if word not in stp_list])
     return text1
